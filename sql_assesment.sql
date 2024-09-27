@@ -1,3 +1,4 @@
+use car_rental_system;
 -- 1. Update the daily rate for a Mercedes car to 68.
 
 -- Update Vehicle
@@ -10,7 +11,7 @@
 
 -- declare @toDel int = 7;
 
--- -- Delete related payments
+-- Delete related payments
 
 -- Delete from Payment
 -- where leaseID in (select leaseID from Lease where customerID = @toDel);
@@ -153,12 +154,8 @@
 
 -- 17. Find the Customer Who Has Spent the Most on Leases.
 
--- select TOP 1 C.firstName, C.lastName, SUM(P.amount) as totalPayments
--- from Customer C
--- join Lease L on C.customerID = L.customerID
--- join Payment P on L.leaseID = P.leaseID
--- group by C.firstName, C.lastName
--- order by totalPayments DESC;
+-- select TOP 1 C.firstName, C.lastName, SUM(P.amount) as totalPayments from Customer C join Lease L on C.customerID = L.customerID
+-- join Payment P on L.leaseID = P.leaseID group by C.firstName, C.lastNamen order by totalPayments DESC;
 
 
 
@@ -166,7 +163,24 @@
 -- 18. List All Cars with Their Current Lease Information.
 
 
-select V.make, V.model, L.startDate, L.endDate, C.firstName, C.lastName
-from Vehicle V
-left join Lease L ON V.vehicleID = L.vehicleID
-left join customer C ON L.customerID = C.customerID;
+-- select V.make, V.model, L.startDate, L.endDate, C.firstName, C.lastName
+-- from Vehicle V
+-- left join Lease L ON V.vehicleID = L.vehicleID
+-- left join customer C ON L.customerID = C.customerID;
+
+
+SELECT L.leaseID, C.firstName, C.lastName, V.make, V.model, L.startDate, L.endDate
+FROM Lease L
+JOIN Customer C ON L.customerID = C.customerID
+JOIN Vehicle V ON L.vehicleID = V.vehicleID
+WHERE EXISTS (
+    SELECT L.leaseID
+    FROM Lease L
+    WHERE GETDATE() BETWEEN L.startDate AND L.endDate
+);
+
+
+
+
+-- note: you will see no output as date in 
+-- the table is for 2023 but Currentlly we are in 2024.
