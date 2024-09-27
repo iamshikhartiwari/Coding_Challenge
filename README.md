@@ -1,4 +1,4 @@
-# Hexaware_SQL_Assesment
+# Coding Challenge
 
 Hi Hexaware team...
 
